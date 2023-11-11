@@ -6,7 +6,10 @@
 import scrapy
 
 
-class NewsScraperItem(scrapy.Item):
+class NewsArticle(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    title = scrapy.Field()
+    link = scrapy.Field()
+    website = scrapy.Field()
+    datetime_written = scrapy.Field()
+    image_link = scrapy.Field()
