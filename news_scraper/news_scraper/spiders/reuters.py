@@ -32,16 +32,17 @@ class ReutersSpider(scrapy.Spider):
 
         news_article_links = response.css("div.story-card div.media-story-card__placement-container__1R55- a::attr(href)").getall()
 
-        news_article_written_datetimes = response.css("div.story-card div.media-story-card__body__3tRWy time::text").getall() # TODO: Convert from plaintext to datetime object
+        # TODO: Figure out better way to scrape the date and time when articles were written
+        # news_article_written_datetimes = response.css("div.story-card div.media-story-card__body__3tRWy time::text").getall() # TODO: Convert from plaintext to datetime object
 
         news_article_image_link = response.css("div.story-card div.media-story-card__placement-container__1R55- img::attr(src)").getall()
 
         articles = []
 
         # Zip function puts all scraped attributes of an article into a dictionary which gets added to the articles list.
-        for title, link, datetime_written, image_link in zip(news_article_titles, news_article_links, news_article_written_datetimes, news_article_image_link):
+        for title, link, image_link in zip(news_article_titles, news_article_links, news_article_image_link):
             article = {
-                "title": title, "link": "https://www.reuters.com" + link, "datetime_written": datetime_written, "image_link": image_link}
+                "title": title, "link": "https://www.reuters.com" + link, "image_link": image_link}
             articles.append(article)
 
         # Makes an instance of NewsArticle() which is scrapy item created in ../items.py, populates the fields and yields each article item
@@ -50,7 +51,7 @@ class ReutersSpider(scrapy.Spider):
             news_article["title"] = article["title"]
             news_article["link"] = article["link"]
             news_article["website"] = ["Reuters", "https://www.reuters.com"]
-            news_article["datetime_written"] = article["datetime_written"]
+            # news_article["datetime_written"] = article["datetime_written"]
             news_article["image_link"] = article["image_link"]
             news_article["datetime_scraped"] = datetime.now()
             yield news_article
