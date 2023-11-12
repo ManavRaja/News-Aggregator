@@ -13,3 +13,4 @@ class NewsArticle(scrapy.Item):
     website = scrapy.Field()
     datetime_written = scrapy.Field()
     image_link = scrapy.Field()
+    datetime_scraped = scrapy.Field()

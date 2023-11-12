@@ -1,5 +1,7 @@
 import scrapy
 
+from datetime import datetime
+
 from news_scraper.items import NewsArticle
 
 
@@ -53,4 +55,5 @@ class ReutersSpider(scrapy.Spider):
             news_article["website"] = ["Reuters", "https://www.reuters.com"]
             news_article["datetime_written"] = article["datetime_written"]
             news_article["image_link"] = article["image_link"]
+            news_article["datetime_scraped"] = datetime.now()
             yield news_article
