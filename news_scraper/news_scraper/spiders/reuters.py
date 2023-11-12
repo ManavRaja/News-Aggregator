@@ -28,16 +28,13 @@ class ReutersSpider(scrapy.Spider):
         Gets information about each article on subcategory page.
         Information: title, link to article page, datetime that article was written, and link to article's image
         """
-        news_article_titles = response.css(
-            "a.link__inherit-line-height__2qjXx::text").getall()
+        news_article_titles = response.css("div.story-card div.media-story-card__body__3tRWy h3 a::text").getall()
 
-        news_article_links = response.css(
-            "a.link__inherit-line-height__2qjXx::attr(href)").getall()
+        news_article_links = response.css("div.story-card div.media-story-card__placement-container__1R55- a::attr(href)").getall()
 
-        news_article_written_datetimes = response.css(
-            "time::attr(datetime)").getall()
+        news_article_written_datetimes = response.css("div.story-card div.media-story-card__body__3tRWy time::text").getall() # TODO: Convert from plaintext to datetime object
 
-        news_article_image_link = response.css("img::attr(src)").getall()
+        news_article_image_link = response.css("div.story-card div.media-story-card__placement-container__1R55- img::attr(src)").getall()
 
         articles = []
 
