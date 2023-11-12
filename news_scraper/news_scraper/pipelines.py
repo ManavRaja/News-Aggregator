@@ -15,7 +15,7 @@ class NewsScraperPipeline:
 
 
 class MongoPipeline:
-    collection_name = "News-Articles"
+    collection_name = "NewsArticles"
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
