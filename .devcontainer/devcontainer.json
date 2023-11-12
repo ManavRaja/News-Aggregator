@@ -9,7 +9,9 @@
 			"installTools": true,
 			"version": "3.12"
 		}
-	}
+	},
+
+	"runArgs": ["--network=host"]
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
