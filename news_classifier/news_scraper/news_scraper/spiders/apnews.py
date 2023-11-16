@@ -36,31 +36,14 @@ class APNewsSpider(scrapy.Spider):
         """
         Gets information about each article on subcategory page.
         Information: title, link to article page, and link to article's image
-        TODO: Figure out a way to get the datetimes for articles since it isn't shown on the subcategory pages.
         """
         news_article_titles = response.css(
             "div.PageList-items-item div.PagePromo div.PagePromo-media a.Link::attr(aria-label)").getall()
 
-        news_article_links = response.css(
-            "div.PageList-items-item div.PagePromo div.PagePromo-media a.Link::attr(href)").getall()
-
-        news_article_image_link = response.css(
-            "div.PageList-items-item div.PagePromo div.PagePromo-media a.Link picture img::attr(src)").getall()
-
-        articles = []
-
-        # Zip function puts all scraped attributes of an article into a dictionary which gets added to the articles list.
-        for title, link, image_link in zip(news_article_titles, news_article_links, news_article_image_link):
-            article = {
-                "title": title, "link": link, "image_link": image_link}
-            articles.append(article)
-
         # Makes an instance of NewsArticle() which is scrapy item created in ../items.py, populates the fields and yields each article item
         news_article = NewsArticle()
-        for article in articles:
-            news_article["title"] = article["title"]
-            news_article["link"] = article["link"]
-            news_article["website"] = ["AP News", "https://apnews.com"]
-            news_article["image_link"] = article["image_link"]
+        for article in news_article_titles:
+            news_article["title"] = article
+            news_article["website"] = response.url
             news_article["datetime_scraped"] = datetime.now()
             yield news_article

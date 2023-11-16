@@ -8,8 +8,8 @@ from news_scraper.items import NewsArticle
 class ReutersSpider(scrapy.Spider):
     name = "reuters"
     allowed_domains = ["www.reuters.com"]
-    start_urls = ["https://www.reuters.com/world", "https://www.reuters.com/business", "https://www.reuters.com/markets",
-                  "https://www.reuters.com/sustainability", "https://www.reuters.com/legal", "https://www.reuters.com/technology"]
+    start_urls = ["https://www.reuters.com/world", "https://www.reuters.com/business", "https://www.reuters.com/markets", 
+                  "https://www.reuters.com/technology"]
 
     def parse(self, response):
         """
@@ -30,28 +30,10 @@ class ReutersSpider(scrapy.Spider):
         """
         news_article_titles = response.css("div.story-card div.media-story-card__body__3tRWy h3 a::text").getall()
 
-        news_article_links = response.css("div.story-card div.media-story-card__placement-container__1R55- a::attr(href)").getall()
-
-        # TODO: Figure out better way to scrape the date and time when articles were written
-        # news_article_written_datetimes = response.css("div.story-card div.media-story-card__body__3tRWy time::text").getall() # TODO: Convert from plaintext to datetime object
-
-        news_article_image_link = response.css("div.story-card div.media-story-card__placement-container__1R55- img::attr(src)").getall()
-
-        articles = []
-
-        # Zip function puts all scraped attributes of an article into a dictionary which gets added to the articles list.
-        for title, link, image_link in zip(news_article_titles, news_article_links, news_article_image_link):
-            article = {
-                "title": title, "link": "https://www.reuters.com" + link, "image_link": image_link}
-            articles.append(article)
-
         # Makes an instance of NewsArticle() which is scrapy item created in ../items.py, populates the fields and yields each article item
         news_article = NewsArticle()
-        for article in articles:
-            news_article["title"] = article["title"]
-            news_article["link"] = article["link"]
-            news_article["website"] = ["Reuters", "https://www.reuters.com"]
-            # news_article["datetime_written"] = article["datetime_written"]
-            news_article["image_link"] = article["image_link"]
+        for article in news_article_titles:
+            news_article["title"] = article
+            news_article["website"] = response.url
             news_article["datetime_scraped"] = datetime.now()
             yield news_article
