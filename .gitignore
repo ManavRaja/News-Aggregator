@@ -1,3 +1,7 @@
+9TrainingData.pkl
+small-bert-9-classifier.keras
+medium-bert-9-classifier.keras
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
